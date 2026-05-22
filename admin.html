@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwapPH Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose: #c9848a;
+      --rose-dusty: #a8636a;
+      --rose-light: #f0dde0;
+      --cream: #faf6f1;
+      --sand: #f2ece4;
+      --text: #2c2420;
+      --text-muted: #9a8a85;
+      --white: #ffffff;
+      --radius: 14px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.07);
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Jost', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--sand);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* LOGIN */
+    .login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .login-logo {
+      font-family: var(--font-display);
+      font-size: 32px;
+      margin-bottom: 4px;
+    }
+
+    .login-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 32px;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--rose-light);
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      outline: none;
+      background: var(--cream);
+      color: var(--text);
+      margin-bottom: 12px;
+      text-align: center;
+      letter-spacing: 0.05em;
+      transition: border-color 0.2s;
+    }
+
+    .login-input:focus { border-color: var(--rose); }
+
+    .login-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--rose);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .login-btn:hover { background: var(--rose-dusty); }
+    .login-error { color: var(--rose-dusty); font-size: 13px; margin-top: 10px; }
+
+    /* DASHBOARD */
+    .dashboard { display: none; max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
+
+    .dash-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .dash-logo { font-family: var(--font-display); font-size: 32px; }
+    .dash-subtitle { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .dash-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 600px) {
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .metric-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: 48px;
+      color: var(--rose-dusty);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .section-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .type-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-swap { background: var(--cream); border: 1px solid var(--rose-light); color: var(--rose-dusty); }
+    .badge-sale { background: var(--rose); color: white; }
+    .badge-free { background: #e8f0e6; color: #5a7a52; }
+    .badge-week { background: var(--sand); color: var(--text-muted); border: 1px solid var(--rose-light); }
+
+    .new-week {
+      font-size: 12px;
+      color: var(--rose-dusty);
+      margin: 8px 0 28px;
+    }
+
+    .recent-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .recent-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--rose-light);
+    }
+
+    .listing-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--rose-light);
+      cursor: pointer;
+      transition: background 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .listing-row:last-child { border-bottom: none; }
+    .listing-row:hover { background: var(--cream); }
+
+    .listing-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--rose-light);
+    }
+
+    .listing-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .listing-info { flex: 1; }
+    .listing-title-text { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+    .listing-date { font-size: 11px; color: var(--text-muted); }
+
+    .badge-sm { font-size: 10px; padding: 3px 10px; }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-refresh {
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid var(--rose-light);
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--rose-dusty);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-refresh:hover { background: var(--rose-light); }
+
+    .btn-logout {
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid var(--rose-light);
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid var(--rose-light);
+      border-top-color: var(--rose);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="login-screen" id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">SwapPH</div>
+      <div class="login-sub">Admin Dashboard</div>
+      <input type="password" class="login-input" id="password-input" placeholder="Пароль" autocomplete="current-password">
+      <button class="login-btn" id="login-btn">Войти</button>
+      <div class="login-error" id="login-error"></div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard" id="dashboard">
+    <div class="dash-header">
+      <span class="dash-logo">SwapPH</span>
+      <span class="dash-subtitle">Admin Dashboard</span>
+    </div>
+    <div class="dash-meta" id="dash-meta">Загрузка...</div>
+
+    <div class="metrics-grid" id="metrics-grid">
+      <div class="metric-card"><div class="metric-value">—</div><div class="metric-label">Пользователей</div></div>
+      <div class="metric-card"><div class="metric-value">—</div><div class="metric-label">Активных</div></div>
+      <div class="metric-card"><div class="metric-value">—</div><div class="metric-label">Хотят</div></div>
+      <div class="metric-card"><div class="metric-value">—</div><div class="metric-label">Avg wants</div></div>
+    </div>
+
+    <p class="section-title">По типу</p>
+    <div class="type-row" id="type-row"></div>
+    <div class="new-week" id="new-week"></div>
+
+    <div class="recent-section">
+      <div class="recent-header">
+        <p class="section-title" style="margin:0">Последние объявления</p>
+      </div>
+      <div id="recent-list"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-refresh" id="refresh-btn">↺ Обновить</button>
+      <button class="btn-logout" id="logout-btn">Выйти</button>
+    </div>
+  </div>
+
+  <script>
+    const ENDPOINT = 'https://aoasoksilellqvkfwcal.supabase.co/functions/v1/swapph-metrics';
+    const SESSION_KEY = 'swapph_admin_pw';
+
+    const loginScreen = document.getElementById('login-screen');
+    const dashboard   = document.getElementById('dashboard');
+    const pwInput     = document.getElementById('password-input');
+    const loginBtn    = document.getElementById('login-btn');
+    const loginError  = document.getElementById('login-error');
+
+    function formatDate(str) {
+      return new Date(str).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    async function fetchMetrics(password) {
+      const res = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Ошибка');
+      return data;
+    }
+
+    function renderDashboard(m) {
+      const avg = m.listings.active > 0 ? (m.wants / m.listings.active).toFixed(1) : '—';
+
+      document.getElementById('dash-meta').textContent =
+        'Обновлено: ' + new Date().toLocaleString('ru-RU');
+
+      document.getElementById('metrics-grid').innerHTML = `
+        <div class="metric-card"><div class="metric-value">${m.users}</div><div class="metric-label">Пользователей</div></div>
+        <div class="metric-card"><div class="metric-value">${m.listings.active}</div><div class="metric-label">Активных</div></div>
+        <div class="metric-card"><div class="metric-value">${m.wants}</div><div class="metric-label">Хотят</div></div>
+        <div class="metric-card"><div class="metric-value">${avg}</div><div class="metric-label">Avg wants</div></div>
+      `;
+
+      document.getElementById('type-row').innerHTML = `
+        <span class="badge badge-swap">Обмен: ${m.listings.swap}</span>
+        <span class="badge badge-sale">Продажа: ${m.listings.sale}</span>
+        <span class="badge badge-free">Бесплатно: ${m.listings.free}</span>
+      `;
+
+      document.getElementById('new-week').textContent =
+        `+ ${m.listings.newThisWeek} новых за 7 дней`;
+
+      document.getElementById('recent-list').innerHTML = m.recent.map(l => {
+        const photo = (l.listing_photos || [])
+          .sort((a, b) => a.order_index - b.order_index)[0]?.url;
+        return `
+          <a class="listing-row" href="listing.html?id=${l.id}" target="_blank">
+            <div class="listing-thumb">
+              ${photo ? `<img src="${photo}" alt="">` : ''}
+            </div>
+            <div class="listing-info">
+              <div class="listing-title-text">${l.title}</div>
+              <div class="listing-date">${formatDate(l.created_at)}</div>
+            </div>
+            <span class="badge badge-${l.type} badge-sm">${l.type}</span>
+          </a>
+        `;
+      }).join('');
+    }
+
+    async function login(password) {
+      loginBtn.innerHTML = '<span class="spinner"></span>';
+      loginError.textContent = '';
+      try {
+        const m = await fetchMetrics(password);
+        localStorage.setItem(SESSION_KEY, password);
+        loginScreen.style.display = 'none';
+        dashboard.style.display = 'block';
+        renderDashboard(m);
+      } catch (e) {
+        loginError.textContent = e.message === 'Unauthorized' ? 'Неверный пароль' : e.message;
+        loginBtn.textContent = 'Войти';
+      }
+    }
+
+    async function refresh() {
+      const pw = localStorage.getItem(SESSION_KEY);
+      if (!pw) return;
+      document.getElementById('refresh-btn').innerHTML = '<span class="spinner"></span> Обновить';
+      try {
+        const m = await fetchMetrics(pw);
+        renderDashboard(m);
+      } finally {
+        document.getElementById('refresh-btn').textContent = '↺ Обновить';
+      }
+    }
+
+    loginBtn.addEventListener('click', () => login(pwInput.value));
+    pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') login(pwInput.value); });
+    document.getElementById('refresh-btn').addEventListener('click', refresh);
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem(SESSION_KEY);
+      location.reload();
+    });
+
+    // Auto-login if session saved
+    const saved = localStorage.getItem(SESSION_KEY);
+    if (saved) {
+      loginScreen.style.display = 'none';
+      dashboard.style.display = 'block';
+      document.getElementById('dash-meta').textContent = 'Загрузка...';
+      fetchMetrics(saved).then(renderDashboard).catch(() => {
+        localStorage.removeItem(SESSION_KEY);
+        location.reload();
+      });
+    }
+  </script>
+</body>
+</html>
