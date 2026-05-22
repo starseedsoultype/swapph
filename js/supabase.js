@@ -27,8 +27,9 @@ async function authWithTelegram(initData) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ initData })
   });
-  if (!res.ok) throw new Error('Auth failed');
-  return res.json();
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || JSON.stringify(data));
+  return data;
 }
 
 // LISTINGS

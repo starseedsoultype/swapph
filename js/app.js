@@ -89,7 +89,9 @@ function showError(msg) {
   if (el) {
     el.textContent = msg;
     el.style.display = 'block';
-    setTimeout(() => el.style.display = 'none', 4000);
+    el.style.fontSize = '11px';
+    el.style.padding = '8px 12px';
+    // не скрываем — нужно увидеть ошибку
   }
 }
 
