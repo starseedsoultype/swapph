@@ -240,7 +240,11 @@ USING (bucket_id = 'listing-photos');
    - setAccessToken(session.access_token)
    - currentUser = await getUser(session.user_id)
 4. При любой ошибке — clearSession() и повтор один раз
-5. applyI18n() + onAppReady()
+5. Авто-определение языка (если нет swapph_lang в localStorage):
+   - Читаем tg.initDataUnsafe.user.language_code
+   - Если не 'ru' → setLang('en')
+   - Сохраняется в localStorage — применяется только при первом запуске
+6. applyI18n() + onAppReady()
 ```
 
 `onAppReady()` реализована отдельно в каждом page-JS файле.
@@ -259,7 +263,25 @@ USING (bucket_id = 'listing-photos');
 
 ---
 
-## 11. Дизайн система
+## 11. i18n система
+
+**Файл:** `js/i18n.js`  
+**Языки:** `ru` (по умолчанию), `en`  
+**Хранение:** `localStorage('swapph_lang')`  
+**Авто-определение:** при первом запуске из `tg.initDataUnsafe.user.language_code` (в `app.js`)  
+**Переключатель:** кнопки RU/EN в header на `profile.html`
+
+Все строки интерфейса вынесены в `translations.ru` и `translations.en`.  
+Компоненты используют `t('ключ')` в JS и `data-i18n="ключ"` в HTML.  
+`setLang(lang)` обновляет все `[data-i18n]` элементы без перезагрузки страницы.
+
+**Тональность по языкам:**
+- RU — практично, дружелюбно: «Вещи на Пангане», «Я на связи», «Добавить вещь»
+- EN — community/reuse: «Pre-loved finds», «Giveaway», «I'm interested», «Browse»
+
+---
+
+## 12. Дизайн система
 
 **Палитра:** песочный/кремовый фон, пыльно-розовые акценты, тёмный текст  
 **Шрифты:** Cormorant Garamond (заголовки), Jost (основной текст)  
@@ -267,7 +289,7 @@ USING (bucket_id = 'listing-photos');
 
 ---
 
-## 12. Грабли которые мы прошли
+## 13. Грабли которые мы прошли
 
 ### GRANT не добавляется автоматически при SQL-миграциях
 Supabase UI при создании таблицы через интерфейс автоматически делает `GRANT ALL`. При создании через SQL — нет. Результат: `permission denied for table X`. Решение: всегда добавлять GRANT явно после создания таблицы через SQL.
@@ -289,7 +311,7 @@ Edge Function, которая принимает первый запрос от 
 
 ---
 
-## 13. Статус функций
+## 14. Статус функций
 
 ### Реализовано
 - `swapph-auth` v7 — авторизация через Telegram initData, стабильно
@@ -298,13 +320,24 @@ Edge Function, которая принимает первый запрос от 
   - Отправляет Telegram-сообщение: "👀 Имя хочет «Вещь»" + ссылка на приложение
   - Вызывается fire-and-forget через `Promise.allSettled` в listing.js
   - CORS OPTIONS handler добавлен
-- `swapph-metrics` v4 — метрики для admin dashboard, `verify_jwt = false`, password-protected, возвращает `is_hidden` в recent
+- `swapph-metrics` v5 — метрики для admin dashboard, `verify_jwt = false`, password-protected
+  - Возвращает `is_hidden` в recent-листингах
+  - Фильтрует `is_active=true` в recent (закрытые объявления не показываются)
 - `swapph-admin` v1 — модерация, `verify_jwt = false`, password-protected
   - Принимает: `{ action: 'toggle_hide', listingId, password }`
   - Переключает `is_hidden` на листинге через service_role
+- `swapph-bot` v2 — обработчик входящих сообщений, `verify_jwt = false`
+  - Webhook зарегистрирован: `https://aoasoksilellqvkfwcal.supabase.co/functions/v1/swapph-bot`
+  - Отвечает на любое сообщение (включая `/start`) одной короткой фразой
+  - Текст и кнопка зависят от `language_code` пользователя:
+    - RU: «Открой SwapPH, чтобы обменять, продать или отдать вещи на Пангане.» + кнопка «👗 Открыть SwapPH»
+    - EN: «Open SwapPH to swap, sell, or give away pre-loved items on Koh Phangan.» + кнопка «👗 Open SwapPH»
+  - **После деплоя нужно зарегистрировать webhook** (один раз):
+    `https://api.telegram.org/botTOKEN/setWebhook?url=https://aoasoksilellqvkfwcal.supabase.co/functions/v1/swapph-bot`
 - `admin.html` — браузерный дашборд с password gate, кнопка Hide/Show на каждом листинге
 - `dashboard.html` — Telegram Mini App дашборд (только для AlexxaBreeze)
 - Карусель фото, Want flow, контакт через Telegram
+- i18n система: RU/EN переводы с авто-определением языка из Telegram, ручной переключатель на profile.html
 - Индексы на всех ключевых полях (май 2026):
   ```sql
   listings(user_id), listings(created_at DESC), listings(city),
@@ -321,7 +354,7 @@ Edge Function, которая принимает первый запрос от 
 
 ---
 
-## 14. Краткий чеклист для восстановления с нуля
+## 15. Краткий чеклист для восстановления с нуля
 
 - [ ] Создать Supabase проект
 - [ ] Создать 4 таблицы (users, listings, listing_photos, wants)
@@ -332,6 +365,8 @@ Edge Function, которая принимает первый запрос от 
 - [ ] Задеплоить Edge Function `swapph-auth` с `verify_jwt = false`
 - [ ] Задеплоить Edge Function `swapph-notify` с `verify_jwt = true`
 - [ ] Задеплоить Edge Function `swapph-admin` с `verify_jwt = false`
+- [ ] Задеплоить Edge Function `swapph-bot` с `verify_jwt = false`
+- [ ] Зарегистрировать webhook бота: открыть в браузере `https://api.telegram.org/botTOKEN/setWebhook?url=https://aoasoksilellqvkfwcal.supabase.co/functions/v1/swapph-bot`
 - [ ] Создать GitHub репозиторий, включить GitHub Pages
 - [ ] Зарегистрировать Mini App через BotFather `/newapp`
 - [ ] Настроить menu button через BotFather `/setmenubutton`
