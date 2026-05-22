@@ -87,12 +87,14 @@ function renderListing(wantsCount, alreadyWanted) {
         </div>
       ` : ''}
 
-      <div class="listing-author">
+      <div class="listing-author${d.users?.telegram_handle ? ' listing-author-link' : ''}"
+        ${d.users?.telegram_handle ? `onclick="window.open('https://t.me/${d.users.telegram_handle}','_blank')"` : ''}>
         ${d.users?.avatar_url ? `<img src="${d.users.avatar_url}" class="author-avatar" alt="">` : `<div class="author-avatar-placeholder"></div>`}
         <div class="author-info">
-          <span class="author-name">${d.users?.name || ''}</span>
+          <span class="author-name">${d.users?.name || ''}${d.users?.telegram_handle ? ` <span class="author-handle">@${d.users.telegram_handle}</span>` : ''}</span>
           ${d.users?.created_at ? `<span class="author-since">${t('listing.member_since')} ${formatMemberSince(d.users.created_at)}</span>` : ''}
         </div>
+        ${d.users?.telegram_handle ? `<span class="author-arrow">→</span>` : ''}
       </div>
     </div>
   `;
