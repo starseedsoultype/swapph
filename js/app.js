@@ -42,6 +42,14 @@ async function initApp() {
     }
   }
 
+  // Auto-detect language from Telegram if not stored
+  if (!localStorage.getItem('swapph_lang')) {
+    const tgLang = tg.initDataUnsafe?.user?.language_code;
+    if (tgLang && tgLang !== 'ru') {
+      setLang('en');
+    }
+  }
+
   applyI18n();
   onAppReady();
 }
