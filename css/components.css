@@ -570,6 +570,28 @@
   margin: 0 0 12px;
 }
 
+/* LEGAL FOOTER */
+.legal-footer {
+  text-align: center;
+  padding: 8px 20px 24px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.legal-link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.legal-link:hover { opacity: 1; }
+
+.legal-sep {
+  margin: 0 8px;
+  opacity: 0.4;
+}
+
 /* SKELETON */
 .skeleton-grid {
   display: grid;

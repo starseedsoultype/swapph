@@ -285,14 +285,23 @@ Edge Function, которая принимает первый запрос от 
 
 ### Реализовано
 - `swapph-auth` v7 — авторизация через Telegram initData, стабильно
-- `swapph-notify` v1 — уведомление владельцу при нажатии Want, `verify_jwt = true`
+- `swapph-notify` v2 — уведомление владельцу при нажатии Want, `verify_jwt = true`
   - Получает: `{ ownerTelegramId, listingTitle, wanterName }`
   - Отправляет Telegram-сообщение: "👀 Имя хочет «Вещь»" + ссылка на приложение
   - Вызывается fire-and-forget через `Promise.allSettled` в listing.js
+  - CORS OPTIONS handler добавлен
+- `swapph-metrics` v3 — метрики для admin dashboard, `verify_jwt = false`, password-protected
+- `admin.html` — браузерный дашборд с password gate, auto-login из localStorage
+- `dashboard.html` — Telegram Mini App дашборд (только для AlexxaBreeze)
 - Карусель фото, Want flow, контакт через Telegram
+- Индексы на всех ключевых полях (май 2026):
+  ```sql
+  listings(user_id), listings(created_at DESC), listings(city),
+  listings(is_active), listing_photos(listing_id),
+  wants(user_id), wants(listing_id)
+  ```
 
 ### Ещё не реализовано
-- Индексы на listings (created_at, city, category, type) — нужны при росте > 1000 объявлений
 - Rollback listing при неудачной загрузке фото — orphan data риск
 - Supabase migrations и Edge Functions в GitHub репозитории — организационный риск
 - pg_cron для архивирования старых объявлений
