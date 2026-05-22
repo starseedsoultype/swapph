@@ -37,7 +37,7 @@ async function initApp() {
       setAccessToken(session.access_token);
       currentUser = await getUser(session.user_id);
     } catch (e2) {
-      showError(t('error.generic'));
+      showError(e2.message || t('error.generic'));
       return;
     }
   }
