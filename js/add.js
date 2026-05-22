@@ -35,18 +35,29 @@ function handlePhotoSelect(e) {
 
 function renderPhotoPreview() {
   const container = document.getElementById('photo-preview');
-  container.innerHTML = selectedFiles.map((f, i) => `
-    <div class="photo-thumb">
-      <img src="${URL.createObjectURL(f)}" alt="">
-      <button class="photo-remove" data-index="${i}">×</button>
-    </div>
-  `).join('');
+  container.innerHTML = '';
 
-  container.querySelectorAll('.photo-remove').forEach(btn => {
+  selectedFiles.forEach((f, i) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'photo-thumb';
+
+    const img = document.createElement('img');
+    img.alt = '';
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    reader.readAsDataURL(f);
+
+    const btn = document.createElement('button');
+    btn.className = 'photo-remove';
+    btn.textContent = '×';
     btn.addEventListener('click', () => {
-      selectedFiles.splice(Number(btn.dataset.index), 1);
+      selectedFiles.splice(i, 1);
       renderPhotoPreview();
     });
+
+    thumb.appendChild(img);
+    thumb.appendChild(btn);
+    container.appendChild(thumb);
   });
 
   document.getElementById('photo-add-btn').style.display =
@@ -69,6 +80,8 @@ async function submitListing() {
 
   tg.MainButton.setText(t('add.uploading'));
   tg.MainButton.disable();
+  const submitBtn = document.getElementById('submit-btn');
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = t('add.uploading'); }
 
   try {
     const listing = {
@@ -101,6 +114,7 @@ async function submitListing() {
   } catch (e) {
     tg.MainButton.setText(t('add.publish'));
     tg.MainButton.enable();
-    showError(t('error.generic'));
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = t('add.publish'); }
+    showError(e.message || t('error.generic'));
   }
 }
