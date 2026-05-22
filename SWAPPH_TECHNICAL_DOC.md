@@ -282,7 +282,10 @@ Edge Function, которая принимает первый запрос от 
 
 ### Реализовано
 - `swapph-auth` v7 — авторизация через Telegram initData, стабильно
-- `swapph-notify` — уведомление владельцу при нажатии Want (задеплоена, см. раздел ниже)
+- `swapph-notify` v1 — уведомление владельцу при нажатии Want, `verify_jwt = true`
+  - Получает: `{ ownerTelegramId, listingTitle, wanterName }`
+  - Отправляет Telegram-сообщение: "👀 Имя хочет «Вещь»" + ссылка на приложение
+  - Вызывается fire-and-forget через `Promise.allSettled` в listing.js
 - Карусель фото, Want flow, контакт через Telegram
 
 ### Ещё не реализовано
@@ -304,6 +307,7 @@ Edge Function, которая принимает первый запрос от 
 - [ ] Создать Storage bucket `listing-photos` с политиками
 - [ ] Добавить Secret `SWAPPH_BOT_TOKEN` в Supabase
 - [ ] Задеплоить Edge Function `swapph-auth` с `verify_jwt = false`
+- [ ] Задеплоить Edge Function `swapph-notify` с `verify_jwt = true`
 - [ ] Создать GitHub репозиторий, включить GitHub Pages
 - [ ] Зарегистрировать Mini App через BotFather `/newapp`
 - [ ] Настроить menu button через BotFather `/setmenubutton`
