@@ -112,6 +112,14 @@ url         text
 order_index int
 ```
 
+### Поле `is_hidden` в `listings`
+
+```sql
+is_hidden  boolean DEFAULT false
+```
+
+Устанавливается через `swapph-admin` Edge Function. Скрытые объявления не показываются в ленте (`getListings` фильтрует `is_hidden = false`). Прямой URL листинга (`listing.html?id=...`) по-прежнему доступен.
+
 ### Таблица `wants`
 
 ```sql
@@ -290,8 +298,11 @@ Edge Function, которая принимает первый запрос от 
   - Отправляет Telegram-сообщение: "👀 Имя хочет «Вещь»" + ссылка на приложение
   - Вызывается fire-and-forget через `Promise.allSettled` в listing.js
   - CORS OPTIONS handler добавлен
-- `swapph-metrics` v3 — метрики для admin dashboard, `verify_jwt = false`, password-protected
-- `admin.html` — браузерный дашборд с password gate, auto-login из localStorage
+- `swapph-metrics` v4 — метрики для admin dashboard, `verify_jwt = false`, password-protected, возвращает `is_hidden` в recent
+- `swapph-admin` v1 — модерация, `verify_jwt = false`, password-protected
+  - Принимает: `{ action: 'toggle_hide', listingId, password }`
+  - Переключает `is_hidden` на листинге через service_role
+- `admin.html` — браузерный дашборд с password gate, кнопка Hide/Show на каждом листинге
 - `dashboard.html` — Telegram Mini App дашборд (только для AlexxaBreeze)
 - Карусель фото, Want flow, контакт через Telegram
 - Индексы на всех ключевых полях (май 2026):
@@ -320,6 +331,7 @@ Edge Function, которая принимает первый запрос от 
 - [ ] Добавить Secret `SWAPPH_BOT_TOKEN` в Supabase
 - [ ] Задеплоить Edge Function `swapph-auth` с `verify_jwt = false`
 - [ ] Задеплоить Edge Function `swapph-notify` с `verify_jwt = true`
+- [ ] Задеплоить Edge Function `swapph-admin` с `verify_jwt = false`
 - [ ] Создать GitHub репозиторий, включить GitHub Pages
 - [ ] Зарегистрировать Mini App через BotFather `/newapp`
 - [ ] Настроить menu button через BotFather `/setmenubutton`
