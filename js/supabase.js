@@ -133,7 +133,9 @@ async function hasAnyListing(userId) {
   const { count } = await getSupabase()
     .from('listings')
     .select('id', { count: 'exact', head: true })
-    .eq('user_id', userId);
+    .eq('user_id', userId)
+    .eq('is_active', true)
+    .eq('is_hidden', false);
   return count > 0;
 }
 
