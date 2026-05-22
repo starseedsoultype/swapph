@@ -161,7 +161,7 @@ async function setupWantButton(listing, alreadyWanted, wantsCount) {
 
     try {
       await addWant(listing.id, currentUser.id);
-      Promise.allSettled([notifyOwner(listing.users?.telegram_id, listing.title)]);
+      Promise.allSettled([notifyOwner(listing.users?.telegram_id, listing.title, currentUser.name)]);
 
       btn.style.display = 'none';
       const contactBlock = document.getElementById('contact-block');

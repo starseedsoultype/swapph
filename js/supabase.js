@@ -61,7 +61,7 @@ async function getListing(id) {
     .select(`
       *,
       listing_photos(url, order_index),
-      users(id, name, telegram_handle, instagram, avatar_url, created_at)
+      users(id, telegram_id, name, telegram_handle, instagram, avatar_url, created_at)
     `)
     .eq('id', id)
     .single();
@@ -186,7 +186,7 @@ async function updateUser(userId, updates) {
 }
 
 // NOTIFICATIONS — fire and forget
-async function notifyOwner(ownerTelegramId, listingTitle) {
+async function notifyOwner(ownerTelegramId, listingTitle, wanterName) {
   try {
     await fetch(`${SUPABASE_URL}/functions/v1/swapph-notify`, {
       method: 'POST',
@@ -194,7 +194,7 @@ async function notifyOwner(ownerTelegramId, listingTitle) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${_accessToken}`
       },
-      body: JSON.stringify({ ownerTelegramId, listingTitle })
+      body: JSON.stringify({ ownerTelegramId, listingTitle, wanterName })
     });
   } catch (_) {}
 }
