@@ -95,6 +95,12 @@ function showError(msg) {
   }
 }
 
+function setupNav(active) {
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.dataset.page === active) item.classList.add('active');
+  });
+}
+
 function formatDate(dateStr) {
   if (!dateStr) return '';
   const d = new Date(dateStr);
