@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Terms of Use — SwapPH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <style>
+    .legal-page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 20px 100px;
+    }
+
+    .legal-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border, #e8e0d5);
+    }
+
+    .legal-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-primary, #2c2c2c);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .legal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-primary, #2c2c2c);
+      margin: 0 0 8px;
+      line-height: 1.2;
+    }
+
+    .legal-date {
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted, #8a7f74);
+      letter-spacing: 0.04em;
+    }
+
+    .lang-toggle {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .lang-btn {
+      font-family: 'Jost', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border, #e8e0d5);
+      background: transparent;
+      color: var(--text-muted, #8a7f74);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--accent, #c9a99a);
+      border-color: var(--accent, #c9a99a);
+      color: #fff;
+    }
+
+    .legal-section {
+      margin-bottom: 36px;
+    }
+
+    .legal-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-primary, #2c2c2c);
+      margin: 0 0 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .legal-section p,
+    .legal-section li {
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text-secondary, #5a5248);
+      margin: 0 0 10px;
+    }
+
+    .legal-section ul {
+      padding-left: 20px;
+      margin: 8px 0 10px;
+    }
+
+    .legal-section li {
+      margin-bottom: 4px;
+    }
+
+    .legal-section a {
+      color: var(--accent, #c9a99a);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .legal-highlight {
+      background: var(--surface, #faf7f4);
+      border-left: 3px solid var(--accent, #c9a99a);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+    }
+
+    .legal-highlight p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .legal-forbidden {
+      background: var(--surface, #faf7f4);
+      border: 1px solid var(--border, #e8e0d5);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 12px 0;
+    }
+
+    .legal-forbidden ul {
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    .legal-forbidden li {
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text-secondary, #5a5248);
+      margin-bottom: 4px;
+    }
+
+    .legal-contact {
+      background: var(--surface, #faf7f4);
+      border: 1px solid var(--border, #e8e0d5);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .legal-contact p {
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      color: var(--text-muted, #8a7f74);
+      margin: 0 0 12px;
+    }
+
+    .legal-contact a {
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent, #c9a99a);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted, #8a7f74);
+      text-decoration: none;
+      margin-bottom: 32px;
+    }
+
+    .back-link:hover {
+      color: var(--text-primary, #2c2c2c);
+    }
+
+    /* Language visibility */
+    [data-lang] { display: none; }
+    body.lang-ru [data-lang="ru"] { display: block; }
+    body.lang-en [data-lang="en"] { display: block; }
+    body.lang-ru [data-lang="ru"].inline { display: inline; }
+    body.lang-en [data-lang="en"].inline { display: inline; }
+    li[data-lang] { display: none; }
+    body.lang-ru li[data-lang="ru"] { display: list-item; }
+    body.lang-en li[data-lang="en"] { display: list-item; }
+
+    :root {
+      --bg: #f8f4ef;
+      --surface: #faf7f4;
+      --border: #e8e0d5;
+      --text-primary: #2c2c2c;
+      --text-secondary: #5a5248;
+      --text-muted: #8a7f74;
+      --accent: #c9a99a;
+    }
+
+    body {
+      background: var(--bg, #f8f4ef);
+    }
+  </style>
+</head>
+<body class="lang-ru">
+
+  <div class="legal-page">
+
+    <a href="index.html" class="back-link">← SwapPH</a>
+
+    <div class="legal-header">
+      <div class="legal-logo">SwapPH</div>
+      <h1 class="legal-title">Terms of Use</h1>
+      <div class="legal-date">
+        <span data-lang="ru" class="inline">Последнее обновление:</span>
+        <span data-lang="en" class="inline">Last updated:</span>
+        May 2025
+      </div>
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+
+    <!-- INTRO -->
+    <div class="legal-section">
+      <div data-lang="ru">
+        <div class="legal-highlight">
+          <p>SwapPH — это платформа для связи людей, которые хотят обменяться, продать или отдать вещи на Ко Пангане. Мы не участвуем в сделках и не несём за них ответственность. Все договорённости — между пользователями напрямую.</p>
+        </div>
+      </div>
+      <div data-lang="en">
+        <div class="legal-highlight">
+          <p>SwapPH is a platform for connecting people who want to swap, sell, or give away clothes on Koh Phangan. We are not a party to any transaction and take no responsibility for deals made. All agreements are directly between users.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">1. Что такое SwapPH</span>
+        <span data-lang="en" class="inline">1. What SwapPH is</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>SwapPH — Telegram Mini App, которое помогает пользователям публиковать объявления об одежде и находить друг друга для обмена, покупки или бесплатной передачи вещей.</p>
+        <p>SwapPH не является магазином, маркетплейсом с платежами, эскроу-сервисом или посредником в сделках. Мы предоставляем инструмент для публикации объявлений и контакта через Telegram.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>SwapPH is a Telegram Mini App that helps users post clothing listings and find each other for swaps, purchases, or free giveaways.</p>
+        <p>SwapPH is not a shop, a payment marketplace, an escrow service, or a transaction intermediary. We provide a tool for posting listings and connecting through Telegram.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">2. Кто может пользоваться</span>
+        <span data-lang="en" class="inline">2. Who can use it</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Использовать SwapPH могут все, у кого есть аккаунт Telegram. Входя в приложение, вы подтверждаете, что:</p>
+        <ul>
+          <li data-lang="ru">Вам исполнилось 13 лет</li>
+          <li data-lang="ru">Вы соглашаетесь с этими правилами</li>
+          <li data-lang="ru">Вы будете общаться уважительно с другими пользователями</li>
+        </ul>
+      </div>
+
+      <div data-lang="en">
+        <p>Anyone with a Telegram account can use SwapPH. By signing in, you confirm that:</p>
+        <ul>
+          <li data-lang="en">You are at least 13 years old</li>
+          <li data-lang="en">You agree to these terms</li>
+          <li data-lang="en">You will communicate respectfully with other users</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">3. Правила публикации</span>
+        <span data-lang="en" class="inline">3. Listing rules</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Публикуя объявление, вы подтверждаете, что вещь принадлежит вам и вы имеете право её продать, обменять или отдать.</p>
+        <p><strong>На платформе запрещено публиковать:</strong></p>
+        <div class="legal-forbidden">
+          <ul>
+            <li data-lang="ru">Подделки и реплики брендовых вещей</li>
+            <li data-lang="ru">Краденые вещи</li>
+            <li data-lang="ru">Лекарства, добавки, вещества</li>
+            <li data-lang="ru">Оружие и опасные предметы</li>
+            <li data-lang="ru">Взрослый контент (18+)</li>
+            <li data-lang="ru">Животных и живых существ</li>
+            <li data-lang="ru">Спам и повторяющиеся объявления</li>
+            <li data-lang="ru">Всё, что нарушает законы Таиланда</li>
+          </ul>
+        </div>
+        <p>Мы оставляем за собой право удалить любое объявление, нарушающее эти правила, без предупреждения.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>By posting a listing, you confirm that you own the item and have the right to sell, swap, or give it away.</p>
+        <p><strong>The following are prohibited on the platform:</strong></p>
+        <div class="legal-forbidden">
+          <ul>
+            <li data-lang="en">Counterfeit or replica branded items</li>
+            <li data-lang="en">Stolen goods</li>
+            <li data-lang="en">Medications, supplements, or substances</li>
+            <li data-lang="en">Weapons or dangerous items</li>
+            <li data-lang="en">Adult content (18+)</li>
+            <li data-lang="en">Animals or living creatures</li>
+            <li data-lang="en">Spam or duplicate listings</li>
+            <li data-lang="en">Anything that violates Thai law</li>
+          </ul>
+        </div>
+        <p>We reserve the right to remove any listing that violates these rules without notice.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">4. Ответственность за сделки</span>
+        <span data-lang="en" class="inline">4. Responsibility for transactions</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>SwapPH — место встречи, а не участник сделки. Это означает:</p>
+        <ul>
+          <li data-lang="ru">Мы не проверяем состояние вещей и не гарантируем их качество</li>
+          <li data-lang="ru">Мы не несём ответственности за несостоявшиеся сделки</li>
+          <li data-lang="ru">Мы не разрешаем споры между пользователями</li>
+          <li data-lang="ru">Мы не возвращаем деньги — все платежи происходят напрямую между людьми</li>
+        </ul>
+        <p>Пользуйтесь здравым смыслом: встречайтесь в публичных местах, проверяйте вещь лично перед передачей денег.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>SwapPH is a meeting point, not a party to any deal. This means:</p>
+        <ul>
+          <li data-lang="en">We do not verify the condition of items or guarantee their quality</li>
+          <li data-lang="en">We are not responsible for failed transactions</li>
+          <li data-lang="en">We do not resolve disputes between users</li>
+          <li data-lang="en">We do not process refunds — all payments happen directly between people</li>
+        </ul>
+        <p>Use common sense: meet in public places, inspect the item before handing over money.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">5. Правила поведения</span>
+        <span data-lang="en" class="inline">5. Community standards</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>SwapPH — маленькое локальное сообщество. Мы ценим уважение и честность. Запрещено:</p>
+        <ul>
+          <li data-lang="ru">Обманывать других пользователей</li>
+          <li data-lang="ru">Использовать чужие фотографии без разрешения</li>
+          <li data-lang="ru">Угрожать, харассировать или оскорблять</li>
+          <li data-lang="ru">Создавать фейковые аккаунты</li>
+          <li data-lang="ru">Намеренно срывать договорённости</li>
+        </ul>
+        <p>Нарушение правил может привести к блокировке аккаунта.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>SwapPH is a small local community. We value respect and honesty. The following are prohibited:</p>
+        <ul>
+          <li data-lang="en">Deceiving other users</li>
+          <li data-lang="en">Using others' photos without permission</li>
+          <li data-lang="en">Threatening, harassing, or insulting others</li>
+          <li data-lang="en">Creating fake accounts</li>
+          <li data-lang="en">Intentionally breaking agreements</li>
+        </ul>
+        <p>Violations may result in account suspension.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">6. Репорты и модерация</span>
+        <span data-lang="en" class="inline">6. Reports and moderation</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Если вы видите объявление, нарушающее правила — сообщите нам. Мы рассматриваем репорты и можем удалить объявление или заблокировать пользователя.</p>
+        <p>Решения о модерации принимаются на усмотрение команды SwapPH и не оспариваются.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>If you see a listing that violates these rules — report it to us. We review reports and may remove listings or suspend accounts.</p>
+        <p>Moderation decisions are made at SwapPH's sole discretion and are final.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">7. Наши права</span>
+        <span data-lang="en" class="inline">7. Our rights</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Мы оставляем за собой право:</p>
+        <ul>
+          <li data-lang="ru">Удалять любые объявления, нарушающие правила</li>
+          <li data-lang="ru">Блокировать пользователей за нарушения</li>
+          <li data-lang="ru">Изменять функциональность приложения</li>
+          <li data-lang="ru">Приостанавливать работу платформы для технического обслуживания</li>
+          <li data-lang="ru">Изменять эти правила с уведомлением через бот</li>
+        </ul>
+      </div>
+
+      <div data-lang="en">
+        <p>We reserve the right to:</p>
+        <ul>
+          <li data-lang="en">Remove any listings that violate these rules</li>
+          <li data-lang="en">Suspend users for violations</li>
+          <li data-lang="en">Change app functionality</li>
+          <li data-lang="en">Pause the platform for maintenance</li>
+          <li data-lang="en">Update these terms with bot notification</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">8. Ограничение ответственности</span>
+        <span data-lang="en" class="inline">8. Limitation of liability</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>SwapPH предоставляется «как есть». Мы не гарантируем бесперебойную работу и не несём ответственности за убытки, возникшие в результате использования платформы или сделок между пользователями.</p>
+        <p>Используя SwapPH, вы принимаете эти условия и действуете на собственный риск.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>SwapPH is provided "as is." We do not guarantee uninterrupted service and are not liable for any losses arising from use of the platform or transactions between users.</p>
+        <p>By using SwapPH, you accept these terms and act at your own risk.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 9 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">9. Применимое право</span>
+        <span data-lang="en" class="inline">9. Governing law</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Эти условия регулируются законодательством Таиланда. Любые споры разрешаются путём переговоров, а при невозможности — в соответствии с применимым законодательством.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>These terms are governed by the laws of Thailand. Any disputes shall be resolved through negotiation, and if not possible, in accordance with applicable law.</p>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="legal-contact">
+      <div data-lang="ru">
+        <p>Вопросы по правилам? Сообщить о нарушении?</p>
+      </div>
+      <div data-lang="en">
+        <p>Questions about the terms? Want to report a violation?</p>
+      </div>
+      <a href="https://t.me/alexakpg_BOT">Написать в Telegram →</a>
+    </div>
+
+  </div>
+
+  <script>
+    function setLang(lang) {
+      document.body.className = 'lang-' + lang;
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+      });
+      try { localStorage.setItem('swapph_lang', lang); } catch(e) {}
+    }
+
+    try {
+      const saved = localStorage.getItem('swapph_lang');
+      if (saved === 'en') setLang('en');
+    } catch(e) {}
+  </script>
+
+</body>
+</html>
