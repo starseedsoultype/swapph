@@ -153,11 +153,14 @@ GRANT SELECT ON public.users TO anon;
 
 GRANT SELECT, INSERT, UPDATE ON public.listings TO authenticated;
 GRANT SELECT ON public.listings TO anon;
+GRANT SELECT ON public.listings TO service_role;
 
 GRANT SELECT, INSERT ON public.listing_photos TO authenticated;
 GRANT SELECT ON public.listing_photos TO anon;
+GRANT SELECT ON public.listing_photos TO service_role;
 
 GRANT SELECT, INSERT ON public.wants TO authenticated;
+GRANT SELECT ON public.wants TO service_role;
 ```
 
 Supabase UI при создании таблицы делает это автоматически. SQL migration — нет.
