@@ -11,7 +11,7 @@ function renderFilters() {
   const categoryEl = document.getElementById('filter-category');
   const typeEl = document.getElementById('filter-type');
 
-  const categories = ['all', 'clothes', 'shoes', 'accessories', 'swimwear', 'kids', 'other'];
+  const categories = ['all', 'clothes', 'shoes', 'accessories', 'swimwear', 'kids', 'home', 'books', 'other'];
   categoryEl.innerHTML = categories.map(c => `
     <button class="filter-btn ${c === feedFilters.category ? 'active' : ''}"
             data-filter="category" data-value="${c}">
