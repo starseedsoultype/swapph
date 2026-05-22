@@ -23,6 +23,10 @@ function renderProfile() {
   document.getElementById('instagram-input').value = u.instagram || '';
   document.getElementById('save-contacts-btn').addEventListener('click', saveContacts);
 
+  if (u.telegram_handle === 'AlexxaBreeze') {
+    document.getElementById('admin-link').style.display = 'block';
+  }
+
   applyI18n();
 }
 

@@ -533,6 +533,43 @@
   flex-shrink: 0;
 }
 
+/* DASHBOARD */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.dash-card {
+  background: var(--color-cream);
+  border-radius: var(--radius);
+  padding: 16px 12px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.dash-value {
+  font-family: var(--font-display);
+  font-size: 40px;
+  color: var(--color-rose-dusty);
+  line-height: 1;
+}
+
+.dash-label {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+}
+
+.dash-section-title {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 12px;
+}
+
 /* SKELETON */
 .skeleton-grid {
   display: grid;

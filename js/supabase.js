@@ -185,6 +185,41 @@ async function updateUser(userId, updates) {
   if (error) throw error;
 }
 
+// METRICS (admin)
+async function getMetrics() {
+  const sb = getSupabase();
+
+  const [usersRes, activeRes, allRes, wantsRes, photosRes, recentRes] = await Promise.all([
+    sb.from('users').select('*', { count: 'exact', head: true }),
+    sb.from('listings').select('id, type, created_at').eq('is_active', true),
+    sb.from('listings').select('*', { count: 'exact', head: true }),
+    sb.from('wants').select('*', { count: 'exact', head: true }),
+    sb.from('listing_photos').select('*', { count: 'exact', head: true }),
+    sb.from('listings')
+      .select('id, title, type, created_at, listing_photos(url, order_index)')
+      .order('created_at', { ascending: false })
+      .limit(8),
+  ]);
+
+  const active = activeRes.data || [];
+  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  return {
+    users: usersRes.count || 0,
+    listings: {
+      active: active.length,
+      total: allRes.count || 0,
+      swap: active.filter(l => l.type === 'swap').length,
+      sale: active.filter(l => l.type === 'sale').length,
+      free: active.filter(l => l.type === 'free').length,
+      newThisWeek: active.filter(l => l.created_at > weekAgo).length,
+    },
+    wants: wantsRes.count || 0,
+    photos: photosRes.count || 0,
+    recent: recentRes.data || [],
+  };
+}
+
 // NOTIFICATIONS — fire and forget
 async function notifyOwner(ownerTelegramId, listingTitle, wanterName) {
   try {
