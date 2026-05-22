@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Privacy Policy — SwapPH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <style>
+    .legal-page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 20px 100px;
+    }
+
+    .legal-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border, #e8e0d5);
+    }
+
+    .legal-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-primary, #2c2c2c);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .legal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-primary, #2c2c2c);
+      margin: 0 0 8px;
+      line-height: 1.2;
+    }
+
+    .legal-date {
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted, #8a7f74);
+      letter-spacing: 0.04em;
+    }
+
+    .lang-toggle {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .lang-btn {
+      font-family: 'Jost', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border, #e8e0d5);
+      background: transparent;
+      color: var(--text-muted, #8a7f74);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--accent, #c9a99a);
+      border-color: var(--accent, #c9a99a);
+      color: #fff;
+    }
+
+    .legal-section {
+      margin-bottom: 36px;
+    }
+
+    .legal-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-primary, #2c2c2c);
+      margin: 0 0 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .legal-section p,
+    .legal-section li {
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text-secondary, #5a5248);
+      margin: 0 0 10px;
+    }
+
+    .legal-section ul {
+      padding-left: 20px;
+      margin: 8px 0 10px;
+    }
+
+    .legal-section li {
+      margin-bottom: 4px;
+    }
+
+    .legal-section a {
+      color: var(--accent, #c9a99a);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .legal-highlight {
+      background: var(--surface, #faf7f4);
+      border-left: 3px solid var(--accent, #c9a99a);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+    }
+
+    .legal-highlight p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .legal-contact {
+      background: var(--surface, #faf7f4);
+      border: 1px solid var(--border, #e8e0d5);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .legal-contact p {
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      color: var(--text-muted, #8a7f74);
+      margin: 0 0 12px;
+    }
+
+    .legal-contact a {
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent, #c9a99a);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted, #8a7f74);
+      text-decoration: none;
+      margin-bottom: 32px;
+    }
+
+    .back-link:hover {
+      color: var(--text-primary, #2c2c2c);
+    }
+
+    /* Language visibility */
+    [data-lang] { display: none; }
+    body.lang-ru [data-lang="ru"] { display: block; }
+    body.lang-en [data-lang="en"] { display: block; }
+    body.lang-ru [data-lang="ru"].inline { display: inline; }
+    body.lang-en [data-lang="en"].inline { display: inline; }
+    li[data-lang] { display: none; }
+    body.lang-ru li[data-lang="ru"] { display: list-item; }
+    body.lang-en li[data-lang="en"] { display: list-item; }
+
+    /* Fallback if no CSS vars (standalone use) */
+    :root {
+      --bg: #f8f4ef;
+      --surface: #faf7f4;
+      --border: #e8e0d5;
+      --text-primary: #2c2c2c;
+      --text-secondary: #5a5248;
+      --text-muted: #8a7f74;
+      --accent: #c9a99a;
+    }
+
+    body {
+      background: var(--bg, #f8f4ef);
+    }
+  </style>
+</head>
+<body class="lang-ru">
+
+  <div class="legal-page">
+
+    <a href="index.html" class="back-link">← SwapPH</a>
+
+    <div class="legal-header">
+      <div class="legal-logo">SwapPH</div>
+      <h1 class="legal-title">Privacy Policy</h1>
+      <div class="legal-date">
+        <span data-lang="ru" class="inline">Последнее обновление:</span>
+        <span data-lang="en" class="inline">Last updated:</span>
+        May 2025
+      </div>
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+
+    <!-- INTRO -->
+    <div class="legal-section">
+      <div data-lang="ru">
+        <div class="legal-highlight">
+          <p>SwapPH — это маленькое локальное сообщество на Ко Пангане для обмена, продажи и раздачи одежды. Мы не продаём ваши данные. Мы не рекламируем. Мы просто помогаем людям находить друг друга.</p>
+        </div>
+      </div>
+      <div data-lang="en">
+        <div class="legal-highlight">
+          <p>SwapPH is a small local community on Koh Phangan for swapping, selling, and giving away clothes. We don't sell your data. We don't advertise. We simply help people connect with each other.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">1. Какие данные мы собираем</span>
+        <span data-lang="en" class="inline">1. What data we collect</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Когда вы входите через Telegram, мы получаем и сохраняем:</p>
+        <ul>
+          <li data-lang="ru">Ваш Telegram ID (числовой идентификатор)</li>
+          <li data-lang="ru">Имя из Telegram</li>
+          <li data-lang="ru">@username (если у вас он есть)</li>
+          <li data-lang="ru">Ссылку на аватар (если Telegram её предоставляет)</li>
+        </ul>
+        <p>Дополнительно вы можете добавить в профиль:</p>
+        <ul>
+          <li data-lang="ru">Instagram-аккаунт (по желанию)</li>
+        </ul>
+        <p>При публикации объявлений мы храним:</p>
+        <ul>
+          <li data-lang="ru">Описание, категорию, цену, размер, фотографии вещей</li>
+          <li data-lang="ru">Историю нажатий «Want» — кто заинтересовался вашими объявлениями</li>
+        </ul>
+      </div>
+
+      <div data-lang="en">
+        <p>When you sign in via Telegram, we receive and store:</p>
+        <ul>
+          <li data-lang="en">Your Telegram ID (numeric identifier)</li>
+          <li data-lang="en">Your name from Telegram</li>
+          <li data-lang="en">Your @username (if you have one)</li>
+          <li data-lang="en">Profile photo URL (if Telegram provides it)</li>
+        </ul>
+        <p>You may also add to your profile:</p>
+        <ul>
+          <li data-lang="en">Instagram account (optional)</li>
+        </ul>
+        <p>When you post listings, we store:</p>
+        <ul>
+          <li data-lang="en">Description, category, price, size, and photos</li>
+          <li data-lang="en">Want history — who expressed interest in your listings</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">2. Зачем нам эти данные</span>
+        <span data-lang="en" class="inline">2. Why we need this data</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Мы используем данные только для работы приложения:</p>
+        <ul>
+          <li data-lang="ru">Авторизация — чтобы вы могли войти без пароля</li>
+          <li data-lang="ru">Публикация объявлений — чтобы другие видели ваши вещи</li>
+          <li data-lang="ru">Уведомления — чтобы вы знали, когда кто-то нажал Want</li>
+          <li data-lang="ru">Связь — чтобы заинтересованные могли написать вам в Telegram</li>
+        </ul>
+        <p>Мы не используем ваши данные для рекламы, аналитики третьих сторон или продажи.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>We use data only to operate the app:</p>
+        <ul>
+          <li data-lang="en">Authentication — so you can sign in without a password</li>
+          <li data-lang="en">Listing display — so others can see your items</li>
+          <li data-lang="en">Notifications — so you know when someone pressed Want</li>
+          <li data-lang="en">Contact — so interested buyers can message you on Telegram</li>
+        </ul>
+        <p>We do not use your data for advertising, third-party analytics, or sale.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">3. Где хранятся данные</span>
+        <span data-lang="en" class="inline">3. Where data is stored</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Данные хранятся в Supabase — облачной базе данных (PostgreSQL). Серверы Supabase находятся в регионе, который мы выбрали при создании проекта. Данные передаются по зашифрованному соединению (HTTPS).</p>
+        <p>Фотографии хранятся в Supabase Storage — публичном бакете. Это означает, что прямая ссылка на фото доступна любому, кто её знает.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>Data is stored in Supabase — a cloud database (PostgreSQL). Supabase servers are located in the region we selected when creating the project. Data is transmitted over an encrypted connection (HTTPS).</p>
+        <p>Photos are stored in Supabase Storage — a public bucket. This means a direct photo URL is accessible to anyone who has it.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">4. Доступ к данным</span>
+        <span data-lang="en" class="inline">4. Data access</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Ваши объявления видны всем зарегистрированным пользователям приложения. Ваш Telegram username отображается заинтересованным покупателям — это основной способ связи на платформе.</p>
+        <p>Мы не передаём ваши данные третьим лицам, рекламодателям или партнёрам.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>Your listings are visible to all registered users of the app. Your Telegram username is shown to interested buyers — this is the primary way to communicate on the platform.</p>
+        <p>We do not share your data with third parties, advertisers, or partners.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">5. Как удалить свои данные</span>
+        <span data-lang="en" class="inline">5. How to delete your data</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Вы можете управлять своими данными в любой момент:</p>
+        <ul>
+          <li data-lang="ru"><strong>Удалить объявление</strong> — в профиле, через кнопку на карточке</li>
+          <li data-lang="ru"><strong>Скрыть себя из ленты</strong> — переключатель «Available» в профиле</li>
+          <li data-lang="ru"><strong>Удалить аккаунт</strong> — напишите нам (см. контакт ниже), и мы удалим все ваши данные в течение 7 дней</li>
+        </ul>
+        <p>При удалении аккаунта удаляются: профиль, все объявления, фотографии и история wants.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>You can manage your data at any time:</p>
+        <ul>
+          <li data-lang="en"><strong>Delete a listing</strong> — in your profile, via the card button</li>
+          <li data-lang="en"><strong>Hide yourself from the feed</strong> — toggle "Available" in your profile</li>
+          <li data-lang="en"><strong>Delete your account</strong> — contact us (see below), and we'll remove all your data within 7 days</li>
+        </ul>
+        <p>Account deletion removes: your profile, all listings, photos, and want history.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">6. Дети</span>
+        <span data-lang="en" class="inline">6. Children</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Приложение не предназначено для детей младше 13 лет. Если вам меньше 13 — пожалуйста, не используйте SwapPH.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>The app is not intended for children under 13. If you are under 13, please do not use SwapPH.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="legal-section">
+      <h2>
+        <span data-lang="ru" class="inline">7. Изменения в политике</span>
+        <span data-lang="en" class="inline">7. Changes to this policy</span>
+      </h2>
+
+      <div data-lang="ru">
+        <p>Если мы существенно изменим эту политику — уведомим через бот @alexakpg_BOT или обновим дату вверху страницы. Продолжение использования приложения после изменений означает согласие с ними.</p>
+      </div>
+
+      <div data-lang="en">
+        <p>If we make significant changes to this policy, we'll notify you via @alexakpg_BOT or update the date at the top of this page. Continued use of the app after changes means you agree to them.</p>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="legal-contact">
+      <div data-lang="ru">
+        <p>Вопросы по приватности? Запрос на удаление данных?</p>
+      </div>
+      <div data-lang="en">
+        <p>Privacy questions? Data deletion request?</p>
+      </div>
+      <a href="https://t.me/alexakpg_BOT">Написать в Telegram →</a>
+    </div>
+
+  </div>
+
+  <script>
+    function setLang(lang) {
+      document.body.className = 'lang-' + lang;
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+      });
+      try { localStorage.setItem('swapph_lang', lang); } catch(e) {}
+    }
+
+    // Restore saved language
+    try {
+      const saved = localStorage.getItem('swapph_lang');
+      if (saved === 'en') setLang('en');
+    } catch(e) {}
+  </script>
+
+</body>
+</html>
