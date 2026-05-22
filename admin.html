@@ -275,6 +275,21 @@
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    .btn-hide {
+      padding: 5px 12px;
+      background: transparent;
+      border: 1px solid var(--rose-light);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .btn-hide:hover { background: var(--rose-light); color: var(--rose-dusty); }
+    .btn-hide:disabled { opacity: 0.5; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -324,6 +339,7 @@
 
   <script>
     const ENDPOINT = 'https://aoasoksilellqvkfwcal.supabase.co/functions/v1/swapph-metrics';
+    const ADMIN_ENDPOINT = 'https://aoasoksilellqvkfwcal.supabase.co/functions/v1/swapph-admin';
     const SESSION_KEY = 'swapph_admin_pw';
 
     const loginScreen = document.getElementById('login-screen');
@@ -372,19 +388,30 @@
       document.getElementById('recent-list').innerHTML = m.recent.map(l => {
         const photo = (l.listing_photos || [])
           .sort((a, b) => a.order_index - b.order_index)[0]?.url;
+        const hidden = l.is_hidden;
         return `
-          <a class="listing-row" href="listing.html?id=${l.id}" target="_blank">
-            <div class="listing-thumb">
-              ${photo ? `<img src="${photo}" alt="">` : ''}
-            </div>
-            <div class="listing-info">
-              <div class="listing-title-text">${l.title}</div>
-              <div class="listing-date">${formatDate(l.created_at)}</div>
-            </div>
-            <span class="badge badge-${l.type} badge-sm">${l.type}</span>
-          </a>
+          <div class="listing-row" style="${hidden ? 'opacity:0.45' : ''}">
+            <a href="listing.html?id=${l.id}" target="_blank" style="display:flex;align-items:center;gap:14px;flex:1;text-decoration:none;color:inherit">
+              <div class="listing-thumb">
+                ${photo ? `<img src="${photo}" alt="">` : ''}
+              </div>
+              <div class="listing-info">
+                <div class="listing-title-text">${l.title}${hidden ? ' <span style="font-size:10px;color:#c9848a">[hidden]</span>' : ''}</div>
+                <div class="listing-date">${formatDate(l.created_at)}</div>
+              </div>
+              <span class="badge badge-${l.type} badge-sm">${l.type}</span>
+            </a>
+            <button class="btn-hide" data-id="${l.id}" data-hidden="${hidden}" onclick="toggleHide(this)">
+              ${hidden ? 'Show' : 'Hide'}
+            </button>
+          </div>
         `;
       }).join('');
+
+      // attach hide handlers
+      document.querySelectorAll('.btn-hide').forEach(btn => {
+        btn.addEventListener('click', () => toggleHide(btn));
+      });
     }
 
     async function login(password) {
@@ -412,6 +439,38 @@
       } finally {
         document.getElementById('refresh-btn').textContent = '↺ Обновить';
       }
+    }
+
+    async function toggleHide(btn) {
+      const listingId = btn.dataset.id;
+      const pw = localStorage.getItem(SESSION_KEY);
+      btn.disabled = true;
+      btn.textContent = '...';
+      try {
+        const res = await fetch(ADMIN_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'toggle_hide', listingId, password: pw }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        btn.dataset.hidden = data.is_hidden ? 'true' : 'false';
+        btn.textContent = data.is_hidden ? 'Show' : 'Hide';
+        const row = btn.closest('.listing-row');
+        row.style.opacity = data.is_hidden ? '0.45' : '1';
+        const titleEl = row.querySelector('.listing-title-text');
+        const hiddenTag = titleEl.querySelector('span');
+        if (data.is_hidden && !hiddenTag) {
+          titleEl.insertAdjacentHTML('beforeend', ' <span style="font-size:10px;color:#c9848a">[hidden]</span>');
+        } else if (!data.is_hidden && hiddenTag) {
+          hiddenTag.remove();
+        }
+      } catch (e) {
+        btn.textContent = 'Error';
+        setTimeout(() => { btn.disabled = false; btn.textContent = btn.dataset.hidden === 'true' ? 'Show' : 'Hide'; }, 2000);
+        return;
+      }
+      btn.disabled = false;
     }
 
     loginBtn.addEventListener('click', () => login(pwInput.value));

@@ -44,6 +44,7 @@ async function getListings({ category, type, city } = {}) {
       users(id, name, telegram_handle, avatar_url, created_at)
     `)
     .eq('is_active', true)
+    .eq('is_hidden', false)
     .order('created_at', { ascending: false });
 
   if (category && category !== 'all') query = query.eq('category', category);
