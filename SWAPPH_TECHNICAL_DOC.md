@@ -1,6 +1,6 @@
 # SwapPH — Полная техническая документация
 
-SwapPH · Май 2026 · Внутренний документ
+SwapPH · Май 2026 · Внутренний документ · Обновлено: май 2026
 
 ---
 
@@ -89,7 +89,7 @@ id            uuid PRIMARY KEY DEFAULT gen_random_uuid()
 user_id       uuid REFERENCES users(id)
 title         text NOT NULL
 description   text
-category      text   -- clothes, shoes, accessories, swimwear, kids, other
+category      text   -- clothes, shoes, accessories, swimwear, kids, home, books, other
 type          text   -- swap, sale, free
 price         numeric
 size          text   -- XS, S, M, L, XL, One size, Kids
@@ -112,13 +112,31 @@ url         text
 order_index int
 ```
 
-### Поле `is_hidden` в `listings`
+### Поле `is_hidden` в `listings` (модерация)
 
 ```sql
 is_hidden  boolean DEFAULT false
 ```
 
 Устанавливается через `swapph-admin` Edge Function. Скрытые объявления не показываются в ленте (`getListings` фильтрует `is_hidden = false`). Прямой URL листинга (`listing.html?id=...`) по-прежнему доступен.
+
+**Важно:** `hasAnyListing()` в `supabase.js` проверяет только листинги с `is_active = true` AND `is_hidden = false`. Пользователь, чей листинг скрыт администратором, теряет возможность нажимать «Интересует» на чужие объявления.
+
+### RPC функция `get_users_count()`
+
+```sql
+CREATE OR REPLACE FUNCTION get_users_count()
+RETURNS integer
+LANGUAGE sql
+SECURITY DEFINER
+AS $$
+  SELECT COUNT(*)::integer FROM users;
+$$;
+
+GRANT EXECUTE ON FUNCTION get_users_count() TO anon;
+```
+
+Нужна потому что RLS на `users` запрещает anon SELECT. Функция обходит RLS через `SECURITY DEFINER` и возвращает общее число пользователей. Используется для счётчика в шапке ленты.
 
 ### Таблица `wants`
 
@@ -303,6 +321,10 @@ Supabase UI при создании таблицы через интерфейс
 ### URL.createObjectURL в Telegram WebView на iOS
 `URL.createObjectURL(file)` иногда возвращает пустой src в Telegram WebView на iOS. Решение: использовать `FileReader` + `readAsDataURL`.
 
+### anon не может считать users через RLS
+
+`users` таблица имеет RLS только для `authenticated`. Прямой `SELECT count(*) FROM users` через anon-клиент возвращает 0. Решение: создать RPC-функцию `get_users_count()` с `SECURITY DEFINER` и выдать `GRANT EXECUTE TO anon`. Не менять RLS политики.
+
 ### tg.MainButton не всегда отображается
 В некоторых версиях Telegram или на некоторых устройствах `tg.MainButton` не виден. Решение: добавить HTML-кнопку как fallback.
 
@@ -338,6 +360,9 @@ Edge Function, которая принимает первый запрос от 
 - `dashboard.html` — Telegram Mini App дашборд (только для AlexxaBreeze)
 - Карусель фото, Want flow, контакт через Telegram
 - i18n система: RU/EN переводы с авто-определением языка из Telegram, ручной переключатель на profile.html
+- Категории: `clothes, shoes, accessories, swimwear, kids, home, books, other`
+- Счётчик участников и вещей в шапке ленты (`feed-stats`) — загружается через `get_users_count()` RPC параллельно с листингами
+- Перемешивание ленты с весом по свежести: листинги младше 7 дней — первый блок (рандом), старше 7 дней — второй блок (рандом). Реализовано в `feed.js → shuffleArray()`
 - Индексы на всех ключевых полях (май 2026):
   ```sql
   listings(user_id), listings(created_at DESC), listings(city),
@@ -361,6 +386,7 @@ Edge Function, которая принимает первый запрос от 
 - [ ] Добавить GRANT на все таблицы для service_role, authenticated, anon
 - [ ] Включить RLS и добавить все политики
 - [ ] Создать Storage bucket `listing-photos` с политиками
+- [ ] Создать RPC `get_users_count()` с `SECURITY DEFINER` + `GRANT EXECUTE TO anon`
 - [ ] Добавить Secret `SWAPPH_BOT_TOKEN` в Supabase
 - [ ] Задеплоить Edge Function `swapph-auth` с `verify_jwt = false`
 - [ ] Задеплоить Edge Function `swapph-notify` с `verify_jwt = true`
