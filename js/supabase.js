@@ -170,10 +170,8 @@ async function savePhotos(listingId, urls) {
 }
 
 async function getUsersCount() {
-  const { count } = await getSupabase()
-    .from('users')
-    .select('id', { count: 'exact', head: true });
-  return count || 0;
+  const { data } = await getSupabase().rpc('get_users_count');
+  return data || 0;
 }
 
 // USERS
