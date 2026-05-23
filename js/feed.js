@@ -112,13 +112,20 @@ function renderFeed() {
   });
 }
 
-function shuffleArray(arr) {
+function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+function shuffleArray(arr) {
+  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const fresh = arr.filter(l => l.created_at >= weekAgo);
+  const older = arr.filter(l => l.created_at < weekAgo);
+  return [...shuffle(fresh), ...shuffle(older)];
 }
 
 function getDaysLeft(dateStr) {
