@@ -48,7 +48,7 @@ async function loadFeed() {
     if (feedFilters.category !== 'all') filters.category = feedFilters.category;
     if (feedFilters.type !== 'all') filters.type = feedFilters.type;
 
-    feedData = await getListings(filters);
+    feedData = shuffleArray(await getListings(filters));
     renderFeed();
   } catch (e) {
     grid.innerHTML = `<p class="feed-empty">${t('error.generic')}</p>`;
@@ -98,6 +98,15 @@ function renderFeed() {
       window.location.href = `listing.html?id=${card.dataset.id}`;
     });
   });
+}
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
 function getDaysLeft(dateStr) {
