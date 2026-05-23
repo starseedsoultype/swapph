@@ -27,6 +27,8 @@ function renderProfile() {
     document.getElementById('admin-link').style.display = 'block';
   }
 
+  document.getElementById('delete-account-btn').addEventListener('click', confirmDeleteAccount);
+
   applyI18n();
 }
 
@@ -46,6 +48,41 @@ async function saveContacts() {
   const btn = document.getElementById('save-contacts-btn');
   btn.textContent = '✓';
   setTimeout(() => btn.textContent = t('profile.save'), 1500);
+}
+
+function confirmDeleteAccount() {
+  const confirmMsg = t('profile.delete_confirm');
+  const tg = window.Telegram?.WebApp;
+
+  if (tg?.showConfirm) {
+    tg.showConfirm(confirmMsg, async (confirmed) => {
+      if (confirmed) await executeDeleteAccount();
+    });
+  } else {
+    // Fallback for non-Telegram context
+    if (window.confirm(confirmMsg)) executeDeleteAccount();
+  }
+}
+
+async function executeDeleteAccount() {
+  const btn = document.getElementById('delete-account-btn');
+  btn.textContent = '...';
+  btn.disabled = true;
+  try {
+    await deleteMyAccount();
+    clearSession();
+    const tg = window.Telegram?.WebApp;
+    if (tg?.showAlert) {
+      tg.showAlert(t('profile.delete_done'), () => tg.close());
+    } else {
+      alert(t('profile.delete_done'));
+      tg?.close();
+    }
+  } catch (e) {
+    btn.textContent = t('profile.delete_account');
+    btn.disabled = false;
+    showError(e.message || t('error.generic'));
+  }
 }
 
 async function loadMyListings() {

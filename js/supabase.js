@@ -169,6 +169,19 @@ async function savePhotos(listingId, urls) {
   if (error) throw error;
 }
 
+async function deleteMyAccount() {
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/swapph-delete-account`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${_accessToken}`
+    }
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to delete account');
+  return data;
+}
+
 async function getUsersCount() {
   const { data } = await getSupabase().rpc('get_users_count');
   return data || 0;

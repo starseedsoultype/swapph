@@ -66,6 +66,9 @@ const translations = {
     'stats.members': 'участников',
     'stats.listings': 'вещей',
     'error.generic': 'Что-то пошло не так',
+    'profile.delete_account': 'Удалить аккаунт',
+    'profile.delete_confirm': 'Все твои данные и объявления удалятся безвозвратно. Продолжить?',
+    'profile.delete_done': 'Аккаунт удалён',
   },
   en: {
     'feed.title': 'Pre-loved finds',
@@ -134,6 +137,9 @@ const translations = {
     'stats.members': 'members',
     'stats.listings': 'items',
     'error.generic': 'Something went wrong',
+    'profile.delete_account': 'Delete account',
+    'profile.delete_confirm': 'All your data and listings will be permanently deleted. Continue?',
+    'profile.delete_done': 'Account deleted',
   }
 };
 
