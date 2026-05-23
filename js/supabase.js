@@ -207,23 +207,67 @@ async function updateUser(userId, updates) {
 }
 
 // METRICS (admin)
-async function getMetrics() {
+async function getMetrics(city = null) {
   const sb = getSupabase();
+  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  const [usersRes, activeRes, allRes, wantsRes, photosRes, recentRes] = await Promise.all([
-    sb.from('users').select('*', { count: 'exact', head: true }),
-    sb.from('listings').select('id, type, created_at').eq('is_active', true),
-    sb.from('listings').select('*', { count: 'exact', head: true }),
-    sb.from('wants').select('*', { count: 'exact', head: true }),
-    sb.from('listing_photos').select('*', { count: 'exact', head: true }),
-    sb.from('listings')
-      .select('id, title, type, created_at, listing_photos(url, order_index)')
-      .order('created_at', { ascending: false })
-      .limit(8),
+  // Active listings — optionally filtered by city
+  let activeQuery = sb.from('listings').select('id, type, created_at, city')
+    .eq('is_active', true).eq('is_hidden', false);
+  if (city) activeQuery = activeQuery.eq('city', city);
+
+  // Recent listings — optionally filtered by city
+  let recentQuery = sb.from('listings')
+    .select('id, title, type, city, created_at, listing_photos(url, order_index)')
+    .eq('is_active', true).eq('is_hidden', false)
+    .order('created_at', { ascending: false }).limit(8);
+  if (city) recentQuery = recentQuery.eq('city', city);
+
+  // Users — filtered by current_city when city is set
+  const usersQuery = city
+    ? sb.from('users').select('id', { count: 'exact', head: true }).eq('current_city', city)
+    : sb.from('users').select('id', { count: 'exact', head: true });
+
+  const [usersRes, activeRes, allRes, recentRes] = await Promise.all([
+    usersQuery,
+    activeQuery,
+    sb.from('listings').select('id', { count: 'exact', head: true }),
+    recentQuery,
   ]);
 
   const active = activeRes.data || [];
-  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  // Wants count — for city filter: count wants on city listings only
+  let wantsCount = 0;
+  if (city) {
+    const listingIds = active.map(l => l.id);
+    if (listingIds.length > 0) {
+      const { count } = await sb.from('wants').select('id', { count: 'exact', head: true })
+        .in('listing_id', listingIds);
+      wantsCount = count || 0;
+    }
+  } else {
+    const { count } = await sb.from('wants').select('id', { count: 'exact', head: true });
+    wantsCount = count || 0;
+  }
+
+  // City breakdown — only for global (all cities) view
+  let cityBreakdown = null;
+  if (!city) {
+    const [listingsByCityRes, usersByCityRes] = await Promise.all([
+      sb.from('listings').select('city').eq('is_active', true).eq('is_hidden', false),
+      sb.from('users').select('current_city'),
+    ]);
+    const lMap = {};
+    (listingsByCityRes.data || []).forEach(l => { lMap[l.city] = (lMap[l.city] || 0) + 1; });
+    const uMap = {};
+    (usersByCityRes.data || []).forEach(u => { uMap[u.current_city] = (uMap[u.current_city] || 0) + 1; });
+    cityBreakdown = Object.keys(CITIES).map(slug => ({
+      slug,
+      listings: lMap[slug] || 0,
+      users: uMap[slug] || 0,
+    }));
+  }
 
   return {
     users: usersRes.count || 0,
@@ -235,9 +279,9 @@ async function getMetrics() {
       free: active.filter(l => l.type === 'free').length,
       newThisWeek: active.filter(l => l.created_at > weekAgo).length,
     },
-    wants: wantsRes.count || 0,
-    photos: photosRes.count || 0,
+    wants: wantsCount,
     recent: recentRes.data || [],
+    cityBreakdown,
   };
 }
 

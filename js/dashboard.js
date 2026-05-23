@@ -1,4 +1,5 @@
 const ADMIN_HANDLE = 'AlexxaBreeze';
+let dashCity = 'all';
 
 function onAppReady() {
   const page = document.getElementById('dashboard-page');
@@ -31,7 +32,7 @@ function renderSkeleton() {
 
 async function loadMetrics() {
   try {
-    const m = await getMetrics();
+    const m = await getMetrics(dashCity === 'all' ? null : dashCity);
     renderDashboard(m);
   } catch (e) {
     document.getElementById('dashboard-page').innerHTML =
@@ -44,17 +45,30 @@ function renderDashboard(m) {
     ? (m.wants / m.listings.active).toFixed(1)
     : '—';
 
+  const cityPills = [{ slug: 'all', name: 'Все', emoji: '🌍' }]
+    .concat(Object.entries(CITIES).map(([slug, c]) => ({ slug, ...c })));
+
   document.getElementById('dashboard-page').innerHTML = `
     <div style="padding: 20px 20px 60px">
       <h1 style="font-family: var(--font-display); font-size: 28px; margin-bottom: 4px">Dashboard</h1>
-      <p style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 24px">
+      <p style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 16px">
         ${new Date().toLocaleString('ru-RU')}
       </p>
 
+      <!-- City filter -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+        ${cityPills.map(c => `
+          <button class="filter-btn dash-city-btn ${dashCity === c.slug ? 'active' : ''}" data-city="${c.slug}">
+            ${c.emoji} ${c.name}
+          </button>
+        `).join('')}
+      </div>
+
+      <!-- Stat cards -->
       <div class="dash-grid">
         <div class="dash-card">
           <div class="dash-value">${m.users}</div>
-          <div class="dash-label">Пользователей</div>
+          <div class="dash-label">${dashCity === 'all' ? 'Пользователей' : 'Юзеров в городе'}</div>
         </div>
         <div class="dash-card">
           <div class="dash-value">${m.listings.active}</div>
@@ -70,6 +84,7 @@ function renderDashboard(m) {
         </div>
       </div>
 
+      <!-- Type breakdown -->
       <h3 class="dash-section-title">Объявления по типу</h3>
       <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px">
         <span class="badge badge-swap">Обмен: ${m.listings.swap}</span>
@@ -80,27 +95,67 @@ function renderDashboard(m) {
         + ${m.listings.newThisWeek} новых за 7 дней
       </p>
 
+      <!-- City breakdown (global view only) -->
+      ${m.cityBreakdown ? `
+        <h3 class="dash-section-title" style="margin-top: 4px">По городам</h3>
+        ${m.cityBreakdown.map(c => {
+          const city = CITIES[c.slug];
+          return `
+            <div style="display:flex;align-items:center;justify-content:space-between;
+                        padding:10px 0;border-bottom:1px solid var(--color-rose-light)">
+              <span style="font-size:14px">${city.emoji} ${city.name}</span>
+              <span style="font-size:12px;color:var(--color-text-muted)">
+                ${c.users} users · ${c.listings} listings
+              </span>
+            </div>
+          `;
+        }).join('')}
+        <div style="margin-bottom: 24px"></div>
+      ` : ''}
+
+      <!-- Recent listings -->
       <h3 class="dash-section-title">Последние объявления</h3>
       ${m.recent.map(l => {
         const photo = (l.listing_photos || [])
           .sort((a, b) => a.order_index - b.order_index)[0]?.url;
+        const cityLabel = CITIES[l.city] ? `${CITIES[l.city].emoji} ${CITIES[l.city].name}` : l.city;
         return `
-          <div class="my-listing-row" onclick="location.href='listing.html?id=${l.id}'" style="cursor:pointer">
+          <div class="my-listing-row" style="cursor:pointer" data-id="${l.id}">
             <div class="my-listing-photo">
               ${photo ? `<img src="${photo}" alt="">` : `<div class="no-photo-sm"></div>`}
             </div>
-            <div class="my-listing-info">
-              <span class="my-listing-title">${l.title}</span>
-              <span style="font-size:11px; color: var(--color-text-muted)">${formatDate(l.created_at)}</span>
+            <div class="my-listing-info" style="min-width:0">
+              <span class="listing-title-text">${l.title}</span>
+              <span style="font-size:11px;color:var(--color-text-muted)">${cityLabel} · ${formatDate(l.created_at)}</span>
             </div>
             <span class="badge badge-${l.type} badge-sm">${l.type}</span>
           </div>
         `;
       }).join('')}
 
-      <button class="btn btn-secondary" onclick="loadMetrics()" style="margin-top: 24px">
-        ↺ Обновить
-      </button>
+      <button class="btn btn-secondary btn-refresh" style="margin-top: 24px">↺ Обновить</button>
     </div>
   `;
+
+  // City pill listeners
+  document.querySelectorAll('.dash-city-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      dashCity = btn.dataset.city;
+      renderSkeleton();
+      loadMetrics();
+    });
+  });
+
+  // Recent listing click
+  document.querySelectorAll('.my-listing-row[data-id]').forEach(row => {
+    row.addEventListener('click', () => {
+      location.href = `listing.html?id=${row.dataset.id}`;
+    });
+  });
+
+  // Refresh button
+  document.querySelector('.btn-refresh')?.addEventListener('click', () => {
+    renderSkeleton();
+    loadMetrics();
+  });
 }
