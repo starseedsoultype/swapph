@@ -1,3 +1,59 @@
+/* CITY SWITCHER */
+#city-switcher {
+  padding: 8px 16px 0;
+}
+
+.city-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 10px;
+  background: var(--color-cream);
+  border: 1px solid var(--color-rose-light);
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s;
+  width: auto;
+}
+
+.city-pill:active { background: var(--color-rose-light); }
+
+.city-pill-arrow {
+  font-size: 9px;
+  color: var(--color-text-muted);
+  margin-left: 2px;
+}
+
+.city-dropdown {
+  margin-top: 6px;
+  background: var(--color-cream);
+  border: 1px solid var(--color-rose-light);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  animation: cardIn 0.15s ease both;
+}
+
+.city-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-rose-light);
+  transition: background 0.15s;
+  color: var(--color-text);
+}
+
+.city-option:last-child { border-bottom: none; }
+.city-option:active { background: var(--color-rose-light); }
+.city-option.active { color: var(--color-rose-dusty); font-weight: 500; }
+
+.city-check { color: var(--color-rose-dusty); font-size: 13px; }
+
 /* FILTERS */
 .feed-stats {
   text-align: center;

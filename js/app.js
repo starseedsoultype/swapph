@@ -1,5 +1,22 @@
 const tg = window.Telegram?.WebApp;
 let currentUser = null; // { id, telegram_id, name, telegram_handle, ... }
+let currentCity = 'phangan';
+
+function resolveCity() {
+  const startParam = tg?.initDataUnsafe?.start_param?.toLowerCase().trim();
+  if (startParam && CITIES[startParam]) return startParam;
+  const saved = localStorage.getItem('swapph_city');
+  if (saved && CITIES[saved]) return saved;
+  if (currentUser?.current_city && CITIES[currentUser.current_city]) return currentUser.current_city;
+  return 'phangan';
+}
+
+function setCurrentCity(slug) {
+  if (!CITIES[slug]) return;
+  currentCity = slug;
+  localStorage.setItem('swapph_city', slug);
+  if (currentUser) updateUser(currentUser.id, { current_city: slug }).catch(() => {});
+}
 
 async function initApp() {
   // Desktop detection
@@ -40,6 +57,12 @@ async function initApp() {
       showError(e2.message || t('error.generic'));
       return;
     }
+  }
+
+  // Resolve city: startapp param > localStorage > DB > default
+  currentCity = resolveCity();
+  if (currentCity !== currentUser.current_city) {
+    setCurrentCity(currentCity);
   }
 
   // Auto-detect language from Telegram if not stored

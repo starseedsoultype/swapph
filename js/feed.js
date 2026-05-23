@@ -2,9 +2,47 @@ let feedFilters = { category: 'all', type: 'all' };
 let feedData = [];
 
 function onAppReady() {
+  renderCitySwitcher();
   renderFilters();
   loadFeed();
   setupNav('feed');
+}
+
+function renderCitySwitcher(open = false) {
+  const container = document.getElementById('city-switcher');
+  if (!container) return;
+  const city = CITIES[currentCity];
+
+  container.innerHTML = `
+    <button class="city-pill" id="city-pill-btn">
+      <span>${city.emoji}</span>
+      <span>${city.name}</span>
+      <span class="city-pill-arrow">${open ? '▴' : '▾'}</span>
+    </button>
+    ${open ? `
+    <div class="city-dropdown">
+      ${Object.entries(CITIES).map(([slug, c]) => `
+        <div class="city-option${slug === currentCity ? ' active' : ''}" data-city="${slug}">
+          <span>${c.emoji} ${c.name}</span>
+          ${slug === currentCity ? '<span class="city-check">✓</span>' : ''}
+        </div>
+      `).join('')}
+    </div>` : ''}
+  `;
+
+  document.getElementById('city-pill-btn').addEventListener('click', () => {
+    renderCitySwitcher(!open);
+  });
+
+  if (open) {
+    container.querySelectorAll('.city-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        setCurrentCity(opt.dataset.city);
+        renderCitySwitcher(false);
+        loadFeed();
+      });
+    });
+  }
 }
 
 function renderFilters() {
@@ -44,7 +82,7 @@ async function loadFeed() {
   grid.innerHTML = `<div class="skeleton-grid">${Array(4).fill('<div class="skeleton-card"></div>').join('')}</div>`;
 
   try {
-    const filters = {};
+    const filters = { city: currentCity };
     if (feedFilters.category !== 'all') filters.category = feedFilters.category;
     if (feedFilters.type !== 'all') filters.type = feedFilters.type;
 

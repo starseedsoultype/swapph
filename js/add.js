@@ -94,7 +94,7 @@ async function submitListing() {
       size: document.getElementById('size-select').value || null,
       condition: document.getElementById('condition-select').value || null,
       location: document.getElementById('location-input').value.trim() || null,
-      city: 'phangan',
+      city: currentCity,
       available_from: document.getElementById('from-input').value || null,
       available_until: document.getElementById('until-input').value || null,
       language: document.getElementById('lang-select').value || 'ru',
