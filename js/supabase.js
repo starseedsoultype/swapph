@@ -169,6 +169,13 @@ async function savePhotos(listingId, urls) {
   if (error) throw error;
 }
 
+async function getUsersCount() {
+  const { count } = await getSupabase()
+    .from('users')
+    .select('id', { count: 'exact', head: true });
+  return count || 0;
+}
+
 // USERS
 async function getUser(userId) {
   const { data, error } = await getSupabase()

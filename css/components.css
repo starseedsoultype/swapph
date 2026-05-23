@@ -1,4 +1,12 @@
 /* FILTERS */
+.feed-stats {
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  padding: 6px 0 2px;
+  letter-spacing: 0.02em;
+}
+
 .filters {
   padding: 12px 16px;
   overflow-x: auto;

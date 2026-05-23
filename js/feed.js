@@ -48,11 +48,23 @@ async function loadFeed() {
     if (feedFilters.category !== 'all') filters.category = feedFilters.category;
     if (feedFilters.type !== 'all') filters.type = feedFilters.type;
 
-    feedData = shuffleArray(await getListings(filters));
+    const [listings, usersCount] = await Promise.all([
+      getListings(filters),
+      getUsersCount()
+    ]);
+
+    feedData = shuffleArray(listings);
     renderFeed();
+    renderFeedStats(usersCount, feedData.length);
   } catch (e) {
     grid.innerHTML = `<p class="feed-empty">${t('error.generic')}</p>`;
   }
+}
+
+function renderFeedStats(users, listings) {
+  const el = document.getElementById('feed-stats');
+  if (!el || !users) return;
+  el.textContent = `${users} ${t('stats.members')} · ${listings} ${t('stats.listings')}`;
 }
 
 function renderFeed() {

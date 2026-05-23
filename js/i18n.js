@@ -63,6 +63,8 @@ const translations = {
     'nav.profile': 'Профиль',
     'desktop.title': 'Открой на телефоне',
     'desktop.text': 'SwapPH работает внутри Telegram на телефоне',
+    'stats.members': 'участников',
+    'stats.listings': 'вещей',
     'error.generic': 'Что-то пошло не так',
   },
   en: {
@@ -129,6 +131,8 @@ const translations = {
     'nav.profile': 'Profile',
     'desktop.title': 'Open on your phone',
     'desktop.text': 'SwapPH works inside Telegram on your phone',
+    'stats.members': 'members',
+    'stats.listings': 'items',
     'error.generic': 'Something went wrong',
   }
 };
