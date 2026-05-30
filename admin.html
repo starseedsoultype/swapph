@@ -320,6 +320,9 @@
       <div class="metric-card"><div class="metric-value">—</div><div class="metric-label">Avg wants</div></div>
     </div>
 
+    <p class="section-title">По городам</p>
+    <div class="metrics-grid" id="city-grid" style="margin-bottom: 28px"></div>
+
     <p class="section-title">По типу</p>
     <div class="type-row" id="type-row"></div>
     <div class="new-week" id="new-week"></div>
@@ -363,6 +366,14 @@
       return data;
     }
 
+    const CITY_META = {
+      phangan:   { name: 'Koh Phangan', emoji: '🌴' },
+      samui:     { name: 'Koh Samui',   emoji: '🏝️' },
+      bali:      { name: 'Bali',        emoji: '🌺' },
+      chiangmai: { name: 'Chiang Mai',  emoji: '🐘' },
+      danang:    { name: 'Da Nang',     emoji: '🌊' },
+    };
+
     function renderDashboard(m) {
       const avg = m.listings.active > 0 ? (m.wants / m.listings.active).toFixed(1) : '—';
 
@@ -375,6 +386,26 @@
         <div class="metric-card"><div class="metric-value">${m.wants}</div><div class="metric-label">Хотят</div></div>
         <div class="metric-card"><div class="metric-value">${avg}</div><div class="metric-label">Avg wants</div></div>
       `;
+
+      const breakdown = Array.isArray(m.cityBreakdown) ? m.cityBreakdown : [];
+      document.getElementById('city-grid').innerHTML = breakdown.map(c => {
+        const meta = CITY_META[c.slug] || { name: c.slug, emoji: '📍' };
+        return `
+          <div class="metric-card" style="text-align:left;padding:16px">
+            <div style="font-size:15px;font-weight:500;margin-bottom:12px">${meta.emoji} ${meta.name}</div>
+            <div style="display:flex;gap:20px">
+              <div>
+                <div class="metric-value" style="font-size:36px">${c.users}</div>
+                <div class="metric-label">users</div>
+              </div>
+              <div>
+                <div class="metric-value" style="font-size:36px">${c.listings}</div>
+                <div class="metric-label">listings</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
 
       document.getElementById('type-row').innerHTML = `
         <span class="badge badge-swap">Обмен: ${m.listings.swap}</span>
