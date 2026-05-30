@@ -68,7 +68,7 @@ function renderDashboard(m) {
       <div class="dash-grid">
         <div class="dash-card">
           <div class="dash-value">${m.users}</div>
-          <div class="dash-label">${dashCity === 'all' ? 'Пользователей' : 'Юзеров в городе'}</div>
+          <div class="dash-label">${dashCity === 'all' ? 'Всего пользователей' : 'Юзеров в городе'}</div>
         </div>
         <div class="dash-card">
           <div class="dash-value">${m.listings.active}</div>
@@ -84,6 +84,31 @@ function renderDashboard(m) {
         </div>
       </div>
 
+      <!-- City breakdown (global view only) -->
+      ${m.cityBreakdown ? `
+        <h3 class="dash-section-title">По городам</h3>
+        <div class="dash-grid" style="margin-bottom: 24px">
+          ${m.cityBreakdown.map(c => {
+            const city = CITIES[c.slug];
+            return `
+              <div class="dash-card" style="text-align:left">
+                <div style="font-size:18px;margin-bottom:6px">${city.emoji} ${city.name}</div>
+                <div style="display:flex;gap:16px">
+                  <div>
+                    <div class="dash-value" style="font-size:22px">${c.users}</div>
+                    <div class="dash-label">users</div>
+                  </div>
+                  <div>
+                    <div class="dash-value" style="font-size:22px">${c.listings}</div>
+                    <div class="dash-label">listings</div>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      ` : ''}
+
       <!-- Type breakdown -->
       <h3 class="dash-section-title">Объявления по типу</h3>
       <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px">
@@ -94,24 +119,6 @@ function renderDashboard(m) {
       <p style="font-size: 12px; color: var(--color-rose-dusty); margin-bottom: 24px">
         + ${m.listings.newThisWeek} новых за 7 дней
       </p>
-
-      <!-- City breakdown (global view only) -->
-      ${m.cityBreakdown ? `
-        <h3 class="dash-section-title" style="margin-top: 4px">По городам</h3>
-        ${m.cityBreakdown.map(c => {
-          const city = CITIES[c.slug];
-          return `
-            <div style="display:flex;align-items:center;justify-content:space-between;
-                        padding:10px 0;border-bottom:1px solid var(--color-rose-light)">
-              <span style="font-size:14px">${city.emoji} ${city.name}</span>
-              <span style="font-size:12px;color:var(--color-text-muted)">
-                ${c.users} users · ${c.listings} listings
-              </span>
-            </div>
-          `;
-        }).join('')}
-        <div style="margin-bottom: 24px"></div>
-      ` : ''}
 
       <!-- Recent listings -->
       <h3 class="dash-section-title">Последние объявления</h3>
