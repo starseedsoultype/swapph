@@ -4,4 +4,5 @@ const CITIES = {
   samui:     { name: 'Koh Samui',   emoji: '🏝️' },
   bali:      { name: 'Bali',        emoji: '🌺' },
   chiangmai: { name: 'Chiang Mai',  emoji: '🐘' },
+  danang:    { name: 'Da Nang',     emoji: '🌊' },
 };
